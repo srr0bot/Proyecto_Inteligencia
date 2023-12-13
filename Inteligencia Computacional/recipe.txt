@@ -1,0 +1,26 @@
+import requests
+
+# Definir tu clave de API y la lista de ingredientes
+api_key = '08325894061646be8f25b2125df5283a'
+ingredientes = ['chicken', 'pasta', 'tomato']
+
+# Convertir la lista de ingredientes a una cadena separada por comas
+ingredientes_str = ','.join(ingredientes)
+
+# Construir la URL de la solicitud
+url = f'https://api.spoonacular.com/recipes/search?apiKey={api_key}&query={ingredientes_str}'
+
+# Hacer la solicitud GET
+response = requests.get(url)
+
+# Verificar si la solicitud fue exitosa (código de estado 200)
+if response.status_code == 200:
+    # Obtener los datos en formato JSON
+    data = response.json()
+
+    # Imprimir los títulos de las recetas encontradas
+    for result in data['results'][0]:
+        print(result['title'])
+else:
+    print(f"Error en la solicitud. Código de estado: {response.status_code}")
+    print(response.text)  # Imprimir el contenido de la respuesta en caso de error
