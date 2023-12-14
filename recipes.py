@@ -40,7 +40,7 @@ if response_busqueda.status_code == 200:
             print("Made with:")
             for ingrediente in data_info_receta['extendedIngredients']:
                 print(f"- {ingrediente['name']}")
-            print("="*50 + "\n")  # Separador
+            print(" "*50 + "\n")  # Separador
         else:
             print(f"Error en la solicitud de información de la receta. Código de estado: {response_info_receta.status_code}")
             print(response_info_receta.text)  # Imprimir el contenido de la respuesta en caso de error
