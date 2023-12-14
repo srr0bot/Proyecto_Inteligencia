@@ -24,3 +24,41 @@ if response.status_code == 200:
 else:
     print(f"Error en la solicitud. Código de estado: {response.status_code}")
     print(response.text)  # Imprimir el contenido de la respuesta en caso de error
+
+# Hacer la solicitud GET para buscar recetas
+response_busqueda = requests.get(url)
+
+# Verificar si la solicitud de búsqueda fue exitosa (código de estado 200)
+if response_busqueda.status_code == 200:
+    # Obtener los datos en formato JSON
+    data_busqueda = response_busqueda.json()
+
+    # Verificar si se encontraron recetas
+    if data_busqueda['totalResults'] > 0:
+        # Obtener el ID de la primera receta encontrada
+        recipe_id = data_busqueda['results']['id']
+
+        # Construir la URL de la solicitud para obtener información detallada de la receta
+        url_info_receta = f'https://api.spoonacular.com/recipes/{recipe_id}/information?apiKey={api_key}&number=3'
+
+        # Hacer la solicitud GET para obtener información detallada de la receta
+        response_info_receta = requests.get(url_info_receta)
+
+        # Verificar si la solicitud de información de la receta fue exitosa (código de estado 200)
+        if response_info_receta.status_code == 200:
+            # Obtener los datos en formato JSON
+            data_info_receta = response_info_receta.json()
+
+            # Imprimir detalles de la receta
+            print("a recipe called:", data_info_receta['title'])
+            print("made with:")
+            for ingrediente in data_info_receta['extendedIngredients']:
+                print(f"- {ingrediente['name']}")
+        else:
+            print(f"Error en la solicitud de información de la receta. Código de estado: {response_info_receta.status_code}")
+            print(response_info_receta.text)  # Imprimir el contenido de la respuesta en caso de error
+    else:
+        print("No se encontraron recetas con esos ingredientes.")
+else:
+    print(f"Error en la solicitud de búsqueda. Código de estado: {response_busqueda.status_code}")
+    print(response_busqueda.text)  # Imprimir el contenido de la respuesta en caso de error
